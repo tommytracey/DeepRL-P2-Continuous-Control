@@ -43,18 +43,14 @@ Here are the high-level steps taken in building an agent that solves this enviro
 1. Establish performance baseline using a random action policy.
 1. Select an appropriate algorithm and begin implementing it.
 1. Run experiments to measure agent performance.
-1. Revise the algorithm and retrain the agent until performance threshold is reached.
+1. Revise the algorithm and retrain the agent until the performance threshold is reached.
 
 ##### &nbsp;
 
 ### 1. Evaluate State & Action Space
-The state space has 37 dimensions and contains the agent's velocity, along with ray-based perception of objects around the agent's forward direction. Given this information, the agent has to learn how to best select actions. Four discrete actions are available:
+The state space space has 33 dimensions corresponding to the position, rotation, velocity, and angular velocities of the robotic arm. There are two sections of the arm &mdash; analogous to those connecting the shoulder and elbow (i.e., the humerus), and the elbow to the wrist (i.e., the forearm) on a human body.
 
-- `0` move forward
-- `1` move backward
-- `2` turn left
-- `3` turn right
-
+The action space is continuous. Each action is a vector with four numbers, corresponding to the torque applied to the two joints (shoulder and elbow). Every element in the action vector must be a number between -1 and 1.
 
 ##### &nbsp;
 
@@ -62,24 +58,24 @@ The state space has 37 dimensions and contains the agent's velocity, along with 
 Before building an agent that learns, I started by testing an agent that selects actions (uniformly) at random at each time step.
 
 ```python
-env_info = env.reset(train_mode=False)[brain_name] # reset the environment
-state = env_info.vector_observations[0]            # get the current state
-score = 0                                          # initialize the score
+env_info = env.reset(train_mode=False)[brain_name]     # reset the environment    
+states = env_info.vector_observations                  # get the current state (for each agent)
+scores = np.zeros(num_agents)                          # initialize the score (for each agent)
 while True:
-    action = np.random.randint(action_size)        # select an action
-    env_info = env.step(action)[brain_name]        # send the action to the environment
-    next_state = env_info.vector_observations[0]   # get the next state
-    reward = env_info.rewards[0]                   # get the reward
-    done = env_info.local_done[0]                  # see if episode has finished
-    score += reward                                # update the score
-    state = next_state                             # roll over the state to next time step
-    if done:                                       # exit loop if episode finished
+    actions = np.random.randn(num_agents, action_size) # select an action (for each agent)
+    actions = np.clip(actions, -1, 1)                  # all actions between -1 and 1
+    env_info = env.step(actions)[brain_name]           # send all actions to tne environment
+    next_states = env_info.vector_observations         # get next state (for each agent)
+    rewards = env_info.rewards                         # get reward (for each agent)
+    dones = env_info.local_done                        # see if episode finished
+    scores += env_info.rewards                         # update the score (for each agent)
+    states = next_states                               # roll over states to next time step
+    if np.any(dones):                                  # exit loop if episode finished
         break
-
-print("Score: {}".format(score))
+print('Total score (averaged over agents) this episode: {}'.format(np.mean(scores)))
 ```
 
-Running this agent a few times resulted in scores from -2 to 2. Obviously, if the agent needs to achieve an average score of 13 over 100 consecutive episodes, then choosing actions at random won't work.
+Running this agent a few times resulted in scores from 0.03 to 0.09. Obviously, if the agent needs to achieve an average score of 30 over 100 consecutive episodes, then choosing actions at random won't work.
 
 
 ##### &nbsp;
