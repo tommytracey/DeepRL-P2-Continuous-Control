@@ -13,9 +13,26 @@
 ---
 
 ## Goal
-In this project, I build a reinforcement learning (RL) agent that navigates an environment that is similar to [Unity's Banana Collector environment](https://github.com/Unity-Technologies/ml-agents/blob/master/docs/Learning-Environment-Examples.md#banana-collector).
+In this project, I build a reinforcement learning (RL) agent that controls a robotic arm within Unity's [Reacher](https://github.com/Unity-Technologies/ml-agents/blob/master/docs/Learning-Environment-Examples.md#reacher) environment. The goal is to get 20 different robotic arms to maintain contact with the green spheres.
 
-A reward of +1 is provided for collecting a yellow banana, and a reward of -1 is provided for collecting a blue banana. The goal of our agent is to collect as many yellow bananas as possible while avoiding blue bananas. In order to solve the environment, our agent must achieve an average score of +13 over 100 consecutive episodes.
+A reward of +0.1 is provided for each timestep that the agent's hand is in the goal location. Thus, the goal of your agent is to maintain its position at the target location for as many time steps as possible.
+
+In order to solve the environment, our agent must achieve a score of +30 averaged across all 20 agents for 100 consecutive episodes.
+
+![Trained Agent][image1]
+
+## Summary of Environment
+- Set-up: Double-jointed arm which can move to target locations.
+- Goal: Each agent must move its hand to the goal location, and keep it there.
+- Agents: The environment contains 20 agents linked to a single Brain.
+- Agent Reward Function (independent):
+ - +0.1 for each timestep agent's hand is in goal location.
+- Brains: One Brain with the following observation/action space.
+ - Vector Observation space: 33 variables corresponding to position, rotation, velocity, and angular velocities of the two arm Rigidbodies.
+ - Vector Action space: (Continuous) Each action is a vector with four numbers, corresponding to torque applicable to two joints. Every entry in the action vector should be a number between -1 and 1.
+ - Visual Observations: None.
+- Reset Parameters: Two, corresponding to goal size, and goal movement speed.
+- Benchmark Mean Reward: 30
 
 ##### &nbsp;
 
@@ -23,10 +40,10 @@ A reward of +1 is provided for collecting a yellow banana, and a reward of -1 is
 Here are the high-level steps taken in building an agent that solves this environment.
 
 1. Evaluate the state and action space.
-1. Establish baseline using a random action policy.
-1. Implement learning algorithm.
+1. Establish performance baseline using a random action policy.
+1. Select an appropriate algorithm and begin implementing it.
 1. Run experiments to measure agent performance.
-1. Select best performing agent and capture video of it navigating the environment.
+1. Revise the algorithm and retrain the agent until performance threshold is reached.
 
 ##### &nbsp;
 
@@ -187,15 +204,9 @@ If you want to run this project yourself, the project starter code can be found 
 
 For this project, you will work with the [Reacher](https://github.com/Unity-Technologies/ml-agents/blob/master/docs/Learning-Environment-Examples.md#reacher) environment.
 
-![Trained Agent][image1]
-
-In this environment, a double-jointed arm can move to target locations. A reward of +0.1 is provided for each step that the agent's hand is in the goal location. Thus, the goal of your agent is to maintain its position at the target location for as many time steps as possible.
-
-The observation space consists of 33 variables corresponding to position, rotation, velocity, and angular velocities of the arm. Each action is a vector with four numbers, corresponding to torque applicable to two joints. Every entry in the action vector should be a number between -1 and 1.
-
 ### Distributed Training
 
-For this project, we will provide you with two separate versions of the Unity environment:
+For this project, there are two separate versions of the Unity environment:
 - The first version contains a single agent.
 - The second version contains 20 identical agents, each with its own copy of the environment.  
 
