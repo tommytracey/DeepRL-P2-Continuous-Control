@@ -1,8 +1,8 @@
 
 **.tar.gz
 **.zip
-# **.app
-# **.app/**/**
+**.app
+**.app/**/**
 **.dmg
 
 **/archive
