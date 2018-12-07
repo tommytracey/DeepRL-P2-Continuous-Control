@@ -9,7 +9,7 @@
 **/archive
 **/checkpoints
 **checkpoints
-**/__pycache__
+**/**pycache**
 
 **/data
 **/test_data
