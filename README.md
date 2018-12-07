@@ -160,6 +160,14 @@ EPSILON_DECAY = 1e-6    # decay rate for noise process
 ```
 
 #### Learning Interval
+In the first few versions of my implementation, the agent performed the learning step at every timestep. This made training very slow, and there was no apparent benefit to the agent's performance. So, I implemented an interval in which the learning step is only performed every 20 timesteps. As part of each learning step, the algorithm samples experiences from the buffer and runs the `Agent.learn()` method 10 times. 
+
+```python
+LEARN_EVERY = 20        # learning timestep interval
+LEARN_NUM = 10          # number of learning passes
+```
+
+You can find the learning interval implemented [here](https://github.com/tommytracey/DeepRL-P2-Continuous-Control/blob/master/ddpg_agent.py#L66) in the `Agent.step()` method in `ddpg_agent.py` of the source code.
 
 
 #### Gradient Clipping
