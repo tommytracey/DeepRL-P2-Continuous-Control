@@ -7,7 +7,15 @@
 *Photo credit: [Google AI Blog](https://ai.googleblog.com/2018/06/scalable-deep-reinforcement-learning.html)*
 
 ##### &nbsp;
----
+
+## Background
+Reinforcement Learning agents such as the one created in this project are used in many real-world applications. In particular, industrial control applications benefit greatly from the continuous control aspects like those implemented in this project. [This Medium blog post](https://medium.com/@BonsaiAI/industrial-control-systems-is-reinforcement-learning-the-answer-6380ab2eddeb ) describes several potential applications of this technology, including:
+
+- **Robotic Control Systems**: Very similar to the Reacher environment in this project!
+- **Automotive Control Systems**: DDPG-like algorithms can help instrument throttle commands, air-to-fuel ratios, and ignition control &mdash; improving fuel economy and reducing emissions.
+- **Automatic Calibration**: DDPG networks are used to calibrate industrial equipment and optimize performance. They can also help detect anomalies and issue alerts to avoid disasters.
+- **HVAC Control Systems**: Heating and Ventilation systems are everywhere, and improvements in these systems can lead to great energy savings. In fact, Google has turned over complete control of their data center cooling systems to an AI system, reducing cooling costs by 40%. And, a [July 2018 paper by Li et al](https://arxiv.org/pdf/1709.05077.pdf) addresses a similar issue for the National Super Computing Center (NSCC). Their algorithm uses an actor-critic model that's similar to the one I used in this project, which reduced NSCC electricity costs by 15%. 
+
 
 ## Goal
 In this project, I build a reinforcement learning (RL) agent that controls a robotic arm within Unity's [Reacher](https://github.com/Unity-Technologies/ml-agents/blob/master/docs/Learning-Environment-Examples.md#reacher) environment. The goal is to get 20 different robotic arms to maintain contact with the green spheres.
@@ -30,6 +38,7 @@ In order to solve the environment, our agent must achieve a score of +30 average
   - Visual Observations: None.
 - Reset Parameters: Two, corresponding to goal size, and goal movement speed.
 - Benchmark Mean Reward: 30
+
 
 ##### &nbsp;
 
