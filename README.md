@@ -8,9 +8,6 @@
 
 ##### &nbsp;
 ---
-# PROJECT NOT YET COMPLETE :
-# THIS PAGE IS UNDER CONSTRUCTION
----
 
 ## Goal
 In this project, I build a reinforcement learning (RL) agent that controls a robotic arm within Unity's [Reacher](https://github.com/Unity-Technologies/ml-agents/blob/master/docs/Learning-Environment-Examples.md#reacher) environment. The goal is to get 20 different robotic arms to maintain contact with the green spheres.
@@ -42,8 +39,7 @@ Here are the high-level steps taken in building an agent that solves this enviro
 1. Evaluate the state and action space.
 1. Establish performance baseline using a random action policy.
 1. Select an appropriate algorithm and begin implementing it.
-1. Run experiments to measure agent performance.
-1. Revise the algorithm and retrain the agent until the performance threshold is reached.
+1. Run experiments, make revisions, and retrain the agent until the performance threshold is reached.
 
 ##### &nbsp;
 
@@ -168,11 +164,11 @@ You can find the learning interval implemented [here](https://github.com/tommytr
 #### Gradient Clipping
 In early versions of my implementation, I had trouble getting my agent to learn. Or, rather, it would start to learn but then become very unstable and either plateau or collapse.
 
-I suspected one of the causes was outsized gradients. Sure enough, after inspecting the weights (output in the `.pth` files), I found that many of the weights from my critic model were becoming quite large after just 5-10 episodes of training. (Note that at this point, I was running the learning process at every timestep, which made the problem worse.)
+I suspect that one of the causes was outsized gradients. Unfortunately, I couldn't find an easy way to investigate this, although I'm sure there's some way of doing this in PyTorch. Absent this investigation, I hypothesize that many of the weights from my critic model were becoming quite large after just 5-10 episodes of training. (Note that at this point, I was running the learning process at every timestep, which made the problem worse.)
 
 The issue of exploding gradients is described in layman's terms in [this post](https://machinelearningmastery.com/exploding-gradients-in-neural-networks/) by Jason Brownlee. Essentially, each layer of your net amplifies the gradient it receives. This becomes a problem when the lower layers of the network accumulate huge gradients, making their respective weight updates too large to allow the model to learn anything.
 
-To combat this, I implemented gradient clipping using the `torch.nn.utils.clip_grad_norm_` function. I set the function to "clip" the norm of the gradients at 1, therefore placing an upper limit on the size of the parameter updates, and preventing them from growing exponentially. Once this change was implemented, along with batch normalization (discussed in the next section), my model became much more stable and my agent began learning at a much faster rate.
+To combat this, I implemented gradient clipping using the `torch.nn.utils.clip_grad_norm_` function. I set the function to "clip" the norm of the gradients at 1, therefore placing an upper limit on the size of the parameter updates, and preventing them from growing exponentially. Once this change was implemented, along with batch normalization (discussed in the next section), my model became much more stable and my agent started learning at a much faster rate.
 
 You can find gradient clipping implemented [here](https://github.com/tommytracey/DeepRL-P2-Continuous-Control/blob/master/ddpg_agent.py#L112) in the "update critic" section of the `Agent.learn()` method, within `ddpg_agent.py` of the source code.
 
@@ -217,10 +213,6 @@ def forward(self, state, action):
 ```
 
 
-#### Soft Update
-
-
-
 #### Experience Replay
 Experience replay allows the RL agent to learn from past experience.
 
@@ -233,29 +225,16 @@ Also, experience replay improves learning through repetition. By doing multiple 
 The implementation of the replay buffer can be found [here](https://github.com/tommytracey/DeepRL-P2-Continuous-Control/blob/master/ddpg_agent.py#L167) in the `ddpg_agent.py` file of the source code.
 
 
-
 ##### &nbsp;
 
-### 4. Run Experiments
-Now that the various components of our algorithm are in place, it's time to measure the agent's performance within the Reacher environment. Performance is measured by the fewest number of episodes required to solve the environment.
+### 4. Results
+Once all of the various components of the algorithm were in place, my agent was able to solve the 20 agent Reacher environment. Again, the performance goal is an average reward of at least +30 over 100 episodes, and over all 20 agents.
 
-The table below shows the complete set of experiments. These experiments compare different combinations of the components and hyperparameters discussed above. However, note that all agents utilized a replay buffer.
+The graph below shows the final results. The best performing agent was able to solve the environment starting with the 12th episode, with a top mean score of 39.3 in the 79th episode. The complete set of results and steps can be found in [this notebook](Continuous_Control_v8.ipynb).
 
-<img src="assets/experiment_summary.png" width="80%" align="top-left" alt="" title="Experiment Summary" />
+<img src="assets/results-graph.png" width="70%" align="top-left" alt="" title="Results Graph" />
 
-
-##### &nbsp;
-
-### 5. Select best performing agent
-The best performing agents were able to solve the environment in 200-250 episodes. While this set of agents included ones that utilized Double DQN and Dueling DQN, ultimately, the top performing agent was a simple DQN with replay buffer.
-
-<img src="assets/best-agent-graph.png" width="50%" align="top-left" alt="" title="Best Agent Graph" />
-
-The complete set of results and steps can be found in [this notebook](Navigation_final.ipynb).
-
-Also, [here](https://youtu.be/NZd1PoeBoro) is a video showing the agent's progress as it goes from randomly selecting actions to learning a policy that maximizes rewards.
-
-<a href="https://youtu.be/NZd1PoeBoro"><img src="assets/video-thumbnail.png" width="40%" align="top-left" alt="" title="Banana Agent Video" /></a>
+<img src="assets/output.png" width="100%" align="top-left" alt="" title="Final output" />
 
 
 ##### &nbsp;
