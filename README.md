@@ -160,7 +160,7 @@ EPSILON_DECAY = 1e-6    # decay rate for noise process
 ```
 
 #### Learning Interval
-In the first few versions of my implementation, the agent performed the learning step at every timestep. This made training very slow, and there was no apparent benefit to the agent's performance. So, I implemented an interval in which the learning step is only performed every 20 timesteps. As part of each learning step, the algorithm samples experiences from the buffer and runs the `Agent.learn()` method 10 times. 
+In the first few versions of my implementation, the agent performed the learning step at every timestep. This made training very slow, and there was no apparent benefit to the agent's performance. So, I implemented an interval in which the learning step is only performed every 20 timesteps. As part of each learning step, the algorithm samples experiences from the buffer and runs the `Agent.learn()` method 10 times.
 
 ```python
 LEARN_EVERY = 20        # learning timestep interval
@@ -171,10 +171,36 @@ You can find the learning interval implemented [here](https://github.com/tommytr
 
 
 #### Gradient Clipping
+In early versions of my implementation, I had trouble getting my agent to learn. Or, rather, it would start to learn but then become very unstable and either plateau or collapse.
+
+I suspected one of the causes was outsized gradients. Sure enough, after inspecting the weights (output in the `.pth` files), I found that many of the weights from my critic model were becoming quite large after just 5-10 episodes of training. (Note that at this point, I was running the learning process at every timestep, which made the problem worse.)
+
+The issue of exploding gradients is described in layman's terms in [this post](https://machinelearningmastery.com/exploding-gradients-in-neural-networks/) by Jason Brownlee. Essentially, each layer of your net amplifies the gradient it receives. This becomes a problem when the lower layers of the network accumulate huge gradients, making their respective weight updates too large to allow the model to learn anything.
+
+To combat this, I implemented gradient clipping using the `torch.nn.utils.clip_grad_norm_` function. I set the function to "clip" the norm of the gradients at 1, therefore placing an upper limit on the size of the parameter updates, and preventing them from growing exponentially. Once this change was implemented, along with batch normalization (discussed in the next section), my model became much more stable and my agent began learning at a much faster rate.
+
+You can find gradient clipping implemented [here](https://github.com/tommytracey/DeepRL-P2-Continuous-Control/blob/master/ddpg_agent.py#L112) in the "update critic" section of the `Agent.learn()` method, within `ddpg_agent.py` of the source code.
+
+Note that this function is applied after the backward pass, but before the optimization step.
+
+```python
+# Compute critic loss
+Q_expected = self.critic_local(states, actions)
+critic_loss = F.mse_loss(Q_expected, Q_targets)
+# Minimize the loss
+self.critic_optimizer.zero_grad()
+critic_loss.backward()
+torch.nn.utils.clip_grad_norm_(self.critic_local.parameters(), 1)
+self.critic_optimizer.step()
+```
 
 #### Batch Normalization
 
+
+
 #### Soft Update
+
+
 
 #### Experience Replay
 Experience replay allows the RL agent to learn from past experience.
@@ -185,7 +211,7 @@ The replay buffer contains a collection of experience tuples with the state, act
 
 Also, experience replay improves learning through repetition. By doing multiple passes over the data, our agents have multiple opportunities to learn from a single experience tuple. This is particularly useful for state-action pairs that occur infrequently within the environment.
 
-The implementation of the replay buffer can be found [here]() in the `ddpg_agent.py` file of the source code.
+The implementation of the replay buffer can be found [here](https://github.com/tommytracey/DeepRL-P2-Continuous-Control/blob/master/ddpg_agent.py#L167) in the `ddpg_agent.py` file of the source code.
 
 
 
