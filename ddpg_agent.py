@@ -18,10 +18,10 @@ LR_CRITIC = 1e-3        # learning rate of the critic
 WEIGHT_DECAY = 0        # L2 weight decay
 LEARN_EVERY = 20        # learning timestep interval
 LEARN_NUM = 10          # number of learning passes
-EPSILON = 1.0           # explore->exploit noise process added to actions
-EPSILON_DECAY = 1e-6    # decay for noise above
-OU_SIGMA = 0.2          # OU noise parameter
-OU_THETA = 0.15         # OU noise parameter
+OU_SIGMA = 0.2          # Ornstein-Uhlenbeck noise parameter
+OU_THETA = 0.15         # Ornstein-Uhlenbeck noise parameter
+EPSILON = 1.0           # explore->exploit noise process added to act step
+EPSILON_DECAY = 1e-6    # decay rate for noise process
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
@@ -146,7 +146,13 @@ class OUNoise:
     """Ornstein-Uhlenbeck process."""
 
     def __init__(self, size, seed, mu=0., theta=OU_THETA, sigma=OU_SIGMA):
-        """Initialize parameters and noise process."""
+        """Initialize parameters and noise process.
+        Params
+        ======
+            mu: long-running mean
+            theta: the speed of mean reversion
+            sigma: the volatility parameter
+        """
         self.mu = mu * np.ones(size)
         self.theta = theta
         self.sigma = sigma

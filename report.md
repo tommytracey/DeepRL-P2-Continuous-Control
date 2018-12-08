@@ -7,15 +7,7 @@
 *Photo credit: [Google AI Blog](https://ai.googleblog.com/2018/06/scalable-deep-reinforcement-learning.html)*
 
 ##### &nbsp;
-
-## Background
-Reinforcement Learning agents such as the one created in this project are used in many real-world applications. In particular, industrial control applications benefit greatly from the continuous control aspects like those implemented in this project. [This Medium blog post](https://medium.com/@BonsaiAI/industrial-control-systems-is-reinforcement-learning-the-answer-6380ab2eddeb ) describes several potential applications of this technology, including:
-
-- **Robotic Control Systems**: Very similar to the Reacher environment in this project!
-- **Automotive Control Systems**: DDPG-like algorithms can help instrument throttle commands, air-to-fuel ratios, and ignition control &mdash; improving fuel economy and reducing emissions.
-- **Automatic Calibration**: DDPG networks are used to calibrate industrial equipment and optimize performance. They can also help detect anomalies and issue alerts to avoid disasters.
-- **HVAC Control Systems**: Heating and Ventilation systems are everywhere, and improvements in these systems can lead to great energy savings. In fact, Google has turned over complete control of their data center cooling systems to an AI system, reducing cooling costs by 40%. And, a [July 2018 paper by Li et al](https://arxiv.org/pdf/1709.05077.pdf) addresses a similar issue for the National Super Computing Center (NSCC). Their algorithm uses an actor-critic model that's similar to the one I used in this project, which reduced NSCC electricity costs by 15%. 
-
+---
 
 ## Goal
 In this project, I build a reinforcement learning (RL) agent that controls a robotic arm within Unity's [Reacher](https://github.com/Unity-Technologies/ml-agents/blob/master/docs/Learning-Environment-Examples.md#reacher) environment. The goal is to get 20 different robotic arms to maintain contact with the green spheres.
@@ -38,7 +30,6 @@ In order to solve the environment, our agent must achieve a score of +30 average
   - Visual Observations: None.
 - Reset Parameters: Two, corresponding to goal size, and goal movement speed.
 - Benchmark Mean Reward: 30
-
 
 ##### &nbsp;
 
@@ -63,7 +54,7 @@ Each action is a vector with four numbers, corresponding to the torque applied t
 Before building an agent that learns, I started by testing an agent that selects actions (uniformly) at random at each time step.
 
 ```python
-env_info = env.reset(train_mode=False)[brain_name]     # reset the environment    
+env_info = env.reset(train_mode=False)[brain_name]     # reset the environment
 states = env_info.vector_observations                  # get the current state (for each agent)
 scores = np.zeros(num_agents)                          # initialize the score (for each agent)
 while True:
@@ -256,85 +247,3 @@ The graph below shows the final results. The best performing agent was able to s
 ##### &nbsp;
 
 ---
-
-# Project Starter Code
-If you want to run this project yourself, the project starter code can be found below or [here](https://github.com/udacity/deep-reinforcement-learning/tree/master/p2_continuous-control) within Udacity's source repo for this project.
-
-[//]: # (Image References)
-
-[image1]: https://user-images.githubusercontent.com/10624937/43851024-320ba930-9aff-11e8-8493-ee547c6af349.gif "Trained Agent"
-[image2]: https://user-images.githubusercontent.com/10624937/43851646-d899bf20-9b00-11e8-858c-29b5c2c94ccc.png "Crawler"
-
-### Introduction
-
-For this project, you will work with the [Reacher](https://github.com/Unity-Technologies/ml-agents/blob/master/docs/Learning-Environment-Examples.md#reacher) environment.
-
-### Distributed Training
-
-For this project, there are two separate versions of the Unity environment:
-- The first version contains a single agent.
-- The second version contains 20 identical agents, each with its own copy of the environment.  
-
-The second version is useful for algorithms like [PPO](https://arxiv.org/pdf/1707.06347.pdf), [A3C](https://arxiv.org/pdf/1602.01783.pdf), and [D4PG](https://openreview.net/pdf?id=SyZipzbCb) that use multiple (non-interacting, parallel) copies of the same agent to distribute the task of gathering experience.  
-
-### Solving the Environment
-
-Note that your project submission need only solve one of the two versions of the environment.
-
-#### Option 1: Solve the First Version
-
-The task is episodic, and in order to solve the environment,  your agent must get an average score of +30 over 100 consecutive episodes.
-
-#### Option 2: Solve the Second Version
-
-The barrier for solving the second version of the environment is slightly different, to take into account the presence of many agents.  In particular, your agents must get an average score of +30 (over 100 consecutive episodes, and over all agents).  Specifically,
-- After each episode, we add up the rewards that each agent received (without discounting), to get a score for each agent.  This yields 20 (potentially different) scores.  We then take the average of these 20 scores.
-- This yields an **average score** for each episode (where the average is over all 20 agents).
-
-The environment is considered solved, when the average (over 100 episodes) of those average scores is at least +30.
-
-### Getting Started
-
-1. Download the environment from one of the links below.  You need only select the environment that matches your operating system:
-
-    - **_Version 1: One (1) Agent_**
-        - Linux: [click here](https://s3-us-west-1.amazonaws.com/udacity-drlnd/P2/Reacher/one_agent/Reacher_Linux.zip)
-        - Mac OSX: [click here](https://s3-us-west-1.amazonaws.com/udacity-drlnd/P2/Reacher/one_agent/Reacher.app.zip)
-        - Windows (32-bit): [click here](https://s3-us-west-1.amazonaws.com/udacity-drlnd/P2/Reacher/one_agent/Reacher_Windows_x86.zip)
-        - Windows (64-bit): [click here](https://s3-us-west-1.amazonaws.com/udacity-drlnd/P2/Reacher/one_agent/Reacher_Windows_x86_64.zip)
-
-    - **_Version 2: Twenty (20) Agents_**
-        - Linux: [click here](https://s3-us-west-1.amazonaws.com/udacity-drlnd/P2/Reacher/Reacher_Linux.zip)
-        - Mac OSX: [click here](https://s3-us-west-1.amazonaws.com/udacity-drlnd/P2/Reacher/Reacher.app.zip)
-        - Windows (32-bit): [click here](https://s3-us-west-1.amazonaws.com/udacity-drlnd/P2/Reacher/Reacher_Windows_x86.zip)
-        - Windows (64-bit): [click here](https://s3-us-west-1.amazonaws.com/udacity-drlnd/P2/Reacher/Reacher_Windows_x86_64.zip)
-
-    (_For Windows users_) Check out [this link](https://support.microsoft.com/en-us/help/827218/how-to-determine-whether-a-computer-is-running-a-32-bit-version-or-64) if you need help with determining if your computer is running a 32-bit version or 64-bit version of the Windows operating system.
-
-    (_For AWS_) If you'd like to train the agent on AWS (and have not [enabled a virtual screen](https://github.com/Unity-Technologies/ml-agents/blob/master/docs/Training-on-Amazon-Web-Service.md)), then please use [this link](https://s3-us-west-1.amazonaws.com/udacity-drlnd/P2/Reacher/one_agent/Reacher_Linux_NoVis.zip) (version 1) or [this link](https://s3-us-west-1.amazonaws.com/udacity-drlnd/P2/Reacher/Reacher_Linux_NoVis.zip) (version 2) to obtain the "headless" version of the environment.  You will **not** be able to watch the agent without enabling a virtual screen, but you will be able to train the agent.  (_To watch the agent, you should follow the instructions to [enable a virtual screen](https://github.com/Unity-Technologies/ml-agents/blob/master/docs/Training-on-Amazon-Web-Service.md), and then download the environment for the **Linux** operating system above._)
-
-2. Place the file in the DRLND GitHub repository, in the `p2_continuous-control/` folder, and unzip (or decompress) the file.
-
-### Instructions
-
-Follow the instructions in `Continuous_Control.ipynb` to get started with training your own agent!  
-
-### (Optional) Challenge: Crawler Environment
-
-After you have successfully completed the project, you might like to solve the more difficult **Crawler** environment.
-
-![Crawler][image2]
-
-In this continuous control environment, the goal is to teach a creature with four legs to walk forward without falling.  
-
-You can read more about this environment in the ML-Agents GitHub [here](https://github.com/Unity-Technologies/ml-agents/blob/master/docs/Learning-Environment-Examples.md#crawler).  To solve this harder task, you'll need to download a new Unity environment.  (**Note**: Udacity students should not submit a project with this new environment.)
-
-You need only select the environment that matches your operating system:
-- Linux: [click here](https://s3-us-west-1.amazonaws.com/udacity-drlnd/P2/Crawler/Crawler_Linux.zip)
-- Mac OSX: [click here](https://s3-us-west-1.amazonaws.com/udacity-drlnd/P2/Crawler/Crawler.app.zip)
-- Windows (32-bit): [click here](https://s3-us-west-1.amazonaws.com/udacity-drlnd/P2/Crawler/Crawler_Windows_x86.zip)
-- Windows (64-bit): [click here](https://s3-us-west-1.amazonaws.com/udacity-drlnd/P2/Crawler/Crawler_Windows_x86_64.zip)
-
-Then, place the file in the `p2_continuous-control/` folder in the DRLND GitHub repository, and unzip (or decompress) the file.  Next, open `Crawler.ipynb` and follow the instructions to learn how to use the Python API to control the agent.
-
-(_For AWS_) If you'd like to train the agent on AWS (and have not [enabled a virtual screen](https://github.com/Unity-Technologies/ml-agents/blob/master/docs/Training-on-Amazon-Web-Service.md)), then please use [this link](https://s3-us-west-1.amazonaws.com/udacity-drlnd/P2/Crawler/Crawler_Linux_NoVis.zip) to obtain the "headless" version of the environment.  You will **not** be able to watch the agent without enabling a virtual screen, but you will be able to train the agent.  (_To watch the agent, you should follow the instructions to [enable a virtual screen](https://github.com/Unity-Technologies/ml-agents/blob/master/docs/Training-on-Amazon-Web-Service.md), and then download the environment for the **Linux** operating system above._)
