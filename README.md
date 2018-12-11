@@ -14,7 +14,7 @@ Reinforcement Learning agents such as the one created in this project are used i
 - **Robotic Control Systems**: Very similar to the Reacher environment in this project!
 - **Automotive Control Systems**: DDPG-like algorithms can help instrument throttle commands, air-to-fuel ratios, and ignition control &mdash; improving fuel economy and reducing emissions.
 - **Automatic Calibration**: DDPG networks are used to calibrate industrial equipment and optimize performance. They can also help detect anomalies and issue alerts to avoid disasters.
-- **HVAC Control Systems**: Heating and Ventilation systems are everywhere, and improvements in these systems can lead to great energy savings. In fact, Google has turned over complete control of their data center cooling systems to an AI system, reducing cooling costs by 40%. And, a [July 2018 paper by Li et al](https://arxiv.org/pdf/1709.05077.pdf) addresses a similar issue for the National Super Computing Center (NSCC). Their algorithm uses an actor-critic model that's similar to the one I used in this project, which reduced NSCC electricity costs by 15%. 
+- **HVAC Control Systems**: Heating and Ventilation systems are everywhere, and improvements in these systems can lead to great energy savings. In fact, Google turned over control of its data center cooling systems to an AI system, [reducing cooling costs by 40%](https://deepmind.com/blog/deepmind-ai-reduces-google-data-centre-cooling-bill-40/). A [July 2018 paper by Li et al](https://arxiv.org/pdf/1709.05077.pdf) addresses a similar issue for the National Super Computing Center (NSCC). Their algorithm uses an actor-critic model that's similar to the one I used in this project, which reduced NSCC electricity costs by 15%. 
 
 
 ## Goal
